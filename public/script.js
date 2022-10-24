@@ -401,7 +401,6 @@ function StartGame() {
 
   socket.on("updateNotif", function (pseudoJoueurEnvoi, pseudoJoueurRecu) {
     if (pseudoJoueur == pseudoJoueurRecu) {
-      console.log("changement de couleur de : " + pseudoJoueurEnvoi);
       const collection = document
         .getElementById("mpChat")
         .getElementsByTagName("li");
