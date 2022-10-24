@@ -10,10 +10,15 @@ const classement = document.getElementById("leaderboard");
 const img_retour = document.getElementById("img_retour");
 const img_send = document.getElementById("img_send");
 const reponse_finale = document.getElementById("reponse_finale");
+//Button pour voir l'historique des réponses du joueur 1
 const joueur_1 = document.getElementById("joueur_1");
+//Button pour voir l'historique des réponses du joueur 2
 const joueur_2 = document.getElementById("joueur_2");
+//Button pour voir l'historique des réponses du joueur 3
 const joueur_3 = document.getElementById("joueur_3");
+//Button pour voir l'historique des réponses du joueur 4
 const joueur_4 = document.getElementById("joueur_4");
+//Button pour voir l'historique des réponses du joueur 5
 const joueur_5 = document.getElementById("joueur_5");
 //TIMER
 const timer = document.getElementById("timer");
@@ -31,6 +36,7 @@ let playersNameRecu = [];
 let playersPointsRecu = [];
 let pseudoQuiNousDM = "";
 
+//on affiche l'historique des réponses
 joueur_1.addEventListener("click", function (e) {
   socket.emit("voirReponsesJoueur", "joueur1", name);
 });
@@ -394,10 +400,6 @@ function StartGame() {
   });
 
   socket.on("updateNotif", function (pseudoJoueurEnvoi, pseudoJoueurRecu) {
-    console.log(
-      "message de : " + pseudoJoueurEnvoi + " a : " + pseudoJoueurRecu
-    );
-    console.log("je suis : " + pseudoJoueur);
     if (pseudoJoueur == pseudoJoueurRecu) {
       console.log("changement de couleur de : " + pseudoJoueurEnvoi);
       const collection = document
