@@ -1,0 +1,55 @@
+#historique_game {
+  opacity: 0.9;
+}
+
+#titre {
+  overflow: hidden;
+  text-align: center;
+}
+
+#titre:before,
+#titre:after {
+  background-color: #000000;
+  content: "";
+  display: inline-block;
+  height: 1px;
+  position: relative;
+  vertical-align: middle;
+  width: 50%;
+}
+
+#titre:before {
+  right: 0.5em;
+  margin-left: -50%;
+}
+
+#titre:after {
+  left: 0.5em;
+  margin-right: -50%;
+}
+
+#titre2 {
+  overflow: hidden;
+  text-align: center;
+}
+
+#titre2:before,
+#titre2:after {
+  background-color: #1260CC;
+  content: "";
+  display: inline-block;
+  height: 3px;
+  position: relative;
+  vertical-align: middle;
+  width: 50%;
+}
+
+#titre2:before {
+  right: 0.5em;
+  margin-left: -50%;
+}
+
+#titre2:after {
+  left: 0.5em;
+  margin-right: -50%;
+}
