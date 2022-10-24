@@ -1,187 +1,251 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>Incognito par Clément !</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--import css -->
-      <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="/socket.io/socket.io.js"></script>
-    <link rel="stylesheet" href="/style.css"/>
-    
+    <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="/style.css" />
+
     <!--import auto css -->
-    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet"/>
-    
+    <link
+      href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+
     <!--import socket -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.2/socket.io.js"></script>
   </head>
   <body class="bg-red-600">
-    
-      <!-- INTRO -->
-      <div class="container h-screen m-auto flex flex-col justify-center items-center" id="intro">
-        <h1 class="text-4xl text-black">
-          Incognito par <span class="text-red-400" >Clément</span> !
-        </h1>
-        <form id="form_pseudo" class="bg-red-500 w-1/2 rounded p-6 shadow-md mt-4 border-4 border-black">
-          <h2 class="text-xl text-pink-300 font-bold mb-4">
-            Entrez votre pseudo :
-          </h2>
-          <input id="name" class="bg-pink-300 d-block rounded w-full border border-pink-400 shadow p-4 text-black" type="text" placeholder="Mets ton pseudo..."/>
-        </form>
-      </div> 
-    
+    <!-- INTRO -->
+    <div
+      class="container h-screen m-auto flex flex-col justify-center items-center"
+      id="intro"
+    >
+      <h1 class="text-4xl text-black">
+        Incognito par <span class="text-red-400">Clément</span> !
+      </h1>
+      <form
+        id="form_pseudo"
+        class="bg-red-500 w-1/2 rounded p-6 shadow-md mt-4 border-4 border-black"
+      >
+        <h2 class="text-xl text-pink-300 font-bold mb-4">
+          Entrez votre pseudo :
+        </h2>
+        <input
+          id="name"
+          class="bg-pink-300 d-block rounded w-full border border-pink-400 shadow p-4 text-black"
+          type="text"
+          placeholder="Mets ton pseudo..."
+        />
+      </form>
+    </div>
+
     <!-- RESULTATS -->
-      <div class="container h-screen m-auto flex flex-col justify-center items-center hidden" id="outro_finale">
-        <div class=" h-full overflow-auto justify-center items-center">
-                  
+    <div
+      class="container h-screen m-auto flex flex-col justify-center items-center hidden"
+      id="outro_finale"
+    >
+      <div class="h-full overflow-auto justify-center items-center">
         <h1 class="text-3xl text-white">Découvrez qui était qui !</h1>
-                    
-          <h1 id="vrai_pseudo" class="text-2xl text-white">Maurice était ...</h1>
-          <h1 id="vrai_prenom" class="text-2xl text-black hidden">zefren</h1>
-          
-          </div>
-      </div> 
-    
+
+        <h1 id="vrai_pseudo" class="text-2xl text-white">Maurice était ...</h1>
+        <h1 id="vrai_prenom" class="text-2xl text-black hidden">zefren</h1>
+      </div>
+    </div>
+
     <!-- RELIER -->
-      <div class="container h-screen m-auto flex flex-col justify-center items-center hidden" id="outro_relier">
-        <div class=" h-full overflow-auto justify-center items-center">
-          
-          <!-- TIMER -->
+    <div
+      class="container h-screen m-auto flex flex-col justify-center items-center hidden"
+      id="outro_relier"
+    >
+      <div class="h-full overflow-auto justify-center items-center">
+        <!-- TIMER -->
         <input
           type="button"
           class="pl-20 ml-20 bg-red-600 text-4xl text-white"
           id="timer"
           value="03:00"
         />
-        
-        <h1 class="text-2xl text-white">Qui sont derrière ces personnes ? Selectionnes-les !</h1>
-          
-          <div id="duo_un" class="space-x-20 pl-20 ml-20 pt-5">
-          <input type="button" id="joueur_1" value="Adrien"/>
+
+        <h1 class="text-2xl text-white">
+          Qui sont derrière ces personnes ? Selectionnes-les !
+        </h1>
+
+        <div id="duo_un" class="space-x-20 pl-20 ml-20 pt-5">
+          <input type="button" id="joueur_1" value="Adrien" />
           <select name="pseudo" id="pseudo-select">
-    <option value="">--Choisis un pseudo--</option>
-    <option value="Adrien">Adrien</option>
-    <option value="Jean-Paul">Jean-Paul</option>
-    <option value="Léo">Léo</option>
-    <option value="Maurice">Maurice</option>
-    <option value="Robert">Robert</option>
-        </select>
-            </div>
-          
-          <div id="duo_deux" class="space-x-20 pl-20 ml-20 pt-5">
-          <input type="button" id="joueur_2" value="Paul"/>
+            <option value="">--Choisis un pseudo--</option>
+            <option value="Adrien">Adrien</option>
+            <option value="Jean-Paul">Jean-Paul</option>
+            <option value="Léo">Léo</option>
+            <option value="Maurice">Maurice</option>
+            <option value="Robert">Robert</option>
+          </select>
+        </div>
+
+        <div id="duo_deux" class="space-x-20 pl-20 ml-20 pt-5">
+          <input type="button" id="joueur_2" value="Paul" />
           <select name="pseudo" id="pseudo-select2">
-    <option value="">--Choisis un pseudo--</option>
-    <option value="Adrien">Adrien</option>
-    <option value="Jean-Paul">Jean-Paul</option>
-    <option value="Léo">Léo</option>
-    <option value="Maurice">Maurice</option>
-    <option value="Robert">Robert</option>
-        </select>
-            </div>
-          
-          <div id="duo_trois" class="space-x-20 pl-20 ml-20 pt-5">
-          <input type="button" id="joueur_3" value="Paul"/>
+            <option value="">--Choisis un pseudo--</option>
+            <option value="Adrien">Adrien</option>
+            <option value="Jean-Paul">Jean-Paul</option>
+            <option value="Léo">Léo</option>
+            <option value="Maurice">Maurice</option>
+            <option value="Robert">Robert</option>
+          </select>
+        </div>
+
+        <div id="duo_trois" class="space-x-20 pl-20 ml-20 pt-5">
+          <input type="button" id="joueur_3" value="Paul" />
           <select name="pseudo" id="pseudo-select3">
-    <option value="">--Choisis un pseudo--</option>
-    <option value="Adrien">Adrien</option>
-    <option value="Jean-Paul">Jean-Paul</option>
-    <option value="Léo">Léo</option>
-    <option value="Maurice">Maurice</option>
-    <option value="Robert">Robert</option>
-        </select>
-            </div>
-          
-          <div id="duo_quatre" class="space-x-20 pl-20 ml-20 pt-5">
-          <input type="button" id="joueur_4" value="Paul"/>
+            <option value="">--Choisis un pseudo--</option>
+            <option value="Adrien">Adrien</option>
+            <option value="Jean-Paul">Jean-Paul</option>
+            <option value="Léo">Léo</option>
+            <option value="Maurice">Maurice</option>
+            <option value="Robert">Robert</option>
+          </select>
+        </div>
+
+        <div id="duo_quatre" class="space-x-20 pl-20 ml-20 pt-5">
+          <input type="button" id="joueur_4" value="Paul" />
           <select name="pseudo" id="pseudo-select4">
-    <option value="">--Choisis un pseudo--</option>
-    <option value="Adrien">Adrien</option>
-    <option value="Jean-Paul">Jean-Paul</option>
-    <option value="Léo">Léo</option>
-    <option value="Maurice">Maurice</option>
-    <option value="Robert">Robert</option>
-        </select>
-            </div>
-          
-          <div id="duo_cinq" class="space-x-20 pl-20 ml-20 pt-5">
-          <input type="button" id="joueur_5" value="Paul"/>
+            <option value="">--Choisis un pseudo--</option>
+            <option value="Adrien">Adrien</option>
+            <option value="Jean-Paul">Jean-Paul</option>
+            <option value="Léo">Léo</option>
+            <option value="Maurice">Maurice</option>
+            <option value="Robert">Robert</option>
+          </select>
+        </div>
+
+        <div id="duo_cinq" class="space-x-20 pl-20 ml-20 pt-5">
+          <input type="button" id="joueur_5" value="Paul" />
           <select name="pseudo" id="pseudo-select5">
-    <option value="">--Choisis un pseudo--</option>
-    <option value="Adrien">Adrien</option>
-    <option value="Jean-Paul">Jean-Paul</option>
-    <option value="Léo">Léo</option>
-    <option value="Maurice">Maurice</option>
-    <option value="Robert">Robert</option>
-        </select>
-            </div>
-          
-          <input id="reponse_finale" class="mt-10 bg-pink-300 hover:bg-red-500 d-block rounded-full w-full border border-pink-400 shadow p-4 text-black" type="button" value="Valider"/>
-          
-          </div>
-      </div> 
-    
-            <!-- AFFICHER HISTORIQUE -->
-        <div class="container m-auto h-screen list-none justify-center items-center hidden" id="historique_joueur">
-          <div class="bg-red-500 h-full w-10/12 rounded p-6 shadow-md border border-black text-white overflow-auto" id="historique_game">
-            <img id="img_retour2" class="fixed w-20 pl-5 pb-5"
-     src="https://cdn.glitch.global/d9fac2fb-dd5e-4283-800f-e504a6e4a40c/back.png?v=1666547461453">
-			<ul id="HistoriqueChat" class="pt-10 text-black">
-				<li></li>
-			</ul>
-          </div>
-    </div>
-    
-                <!-- AFFICHER POINTS -->
-        <div class="container m-auto h-screen list-none flex justify-center items-center hidden" id="points_joueur">
-          <div class="bg-red-500 h-full w-10/12 rounded p-6 shadow-md border border-black text-white overflow-auto" id="points_game">
-            <h1 class="text-4xl text-white">CLASSEMENT FINAL :</h1>
-			<ul id="leaderboard" class="pt-10 text-black">
-      </ul>
-          </div>
-    </div>
-    
-    <!-- JEU -->
-    <div class="container h-screen m-auto flex justify-center items-center hidden" id="game">
-      <div class="bg-red-500 h-full w-10/12 rounded p-6 shadow-md border border-black text-white overflow-auto" id="all_game">
-			<ul id="mychat" class="pt-10">
-				<li></li>
-			</ul>
-        <div class="mt-10 pt-5 w-full flex-col">
-        <form id="form_jeu" class="pt-10 float-left w-5/6 bg-red-500  rounded">
-          <input id="reponse" class="bg-pink-300 d-block rounded w-full border border-pink-400 shadow p-4 text-black" type="text" placeholder="Ecris ta réponse..."/>
-      </form><img id="img_send" class="pt-10 w-20 pl-5"
-     src="https://cdn.glitch.global/d9fac2fb-dd5e-4283-800f-e504a6e4a40c/send.png?v=1666540053322">
-          </div>
-        
-		</div>
-      
-      <div class="bg-red-500 h-full w-auto rounded p-6 shadow-md border border-black text-white overflow-auto" id="mp_game">
-			<ul id="mpChat">
-				<li><label id="username"></label></li>
-			</ul>
+            <option value="">--Choisis un pseudo--</option>
+            <option value="Adrien">Adrien</option>
+            <option value="Jean-Paul">Jean-Paul</option>
+            <option value="Léo">Léo</option>
+            <option value="Maurice">Maurice</option>
+            <option value="Robert">Robert</option>
+          </select>
+        </div>
+
+        <input
+          id="reponse_finale"
+          class="mt-10 bg-pink-300 hover:bg-red-500 d-block rounded-full w-full border border-pink-400 shadow p-4 text-black"
+          type="button"
+          value="Valider"
+        />
       </div>
-            
     </div>
-    
-    <!-- PRIVATE MESSAGE -->
-    <div class="container h-screen m-auto flex justify-center items-center hidden" id="private_message">
-      <div class="bg-red-500 h-full w-10/12 rounded p-6 shadow-md border border-black text-white overflow-auto" id="pm_game">
-          <img id="img_retour" class="fixed w-20 pl-5 pb-5"
-     src="https://cdn.glitch.global/d9fac2fb-dd5e-4283-800f-e504a6e4a40c/back.png?v=1666547461453">        
-			<ul id="privateChat" class="pt-10">
-				<li></li>
-			</ul>
+
+    <!-- AFFICHER HISTORIQUE -->
+    <div
+      class="container m-auto h-screen list-none justify-center items-center hidden"
+      id="historique_joueur"
+    >
+      <div
+        class="bg-red-500 h-full w-10/12 rounded p-6 shadow-md border border-black text-white overflow-auto"
+        id="historique_game"
+      >
+        <img
+          id="img_retour2"
+          class="fixed w-20 pl-5 pb-5"
+          src="https://cdn.glitch.global/d9fac2fb-dd5e-4283-800f-e504a6e4a40c/back.png?v=1666547461453"
+        />
+        <ul id="HistoriqueChat" class="pt-10 text-black">
+          <li></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- AFFICHER POINTS -->
+    <div
+      class="container m-auto h-screen list-none flex justify-center items-center hidden"
+      id="points_joueur"
+    >
+      <div
+        class="bg-red-500 h-full w-10/12 rounded p-6 shadow-md border border-black text-white overflow-auto"
+        id="points_game"
+      >
+        <h1 class="text-4xl text-white">CLASSEMENT FINAL :</h1>
+        <ul id="leaderboard" class="pt-10 text-black"></ul>
+      </div>
+    </div>
+
+    <!-- JEU -->
+    <div
+      class="container h-screen m-auto flex justify-center items-center hidden"
+      id="game"
+    >
+      <div
+        class="bg-red-500 h-full w-10/12 rounded p-6 shadow-md border border-black text-white overflow-auto"
+        id="all_game"
+      >
+        <ul id="mychat" class="pt-10">
+          <li></li>
+        </ul>
         <div class="mt-10 pt-5 w-full flex-col">
-        <form id="form_pm" class="pb-10 fixed bottom-0 w-2/3 rounded">
-          <input id="reponse_pv" class="bg-pink-300 d-block rounded w-2/3 border border-pink-400 shadow p-4 text-black" type="text" placeholder="Ecris ta réponse..."/>
-      </form>
-          </div>
-		</div>
-            
+          <form id="form_jeu" class="pt-10 float-left w-5/6 bg-red-500 rounded">
+            <input
+              id="reponse"
+              class="bg-pink-300 d-block rounded w-full border border-pink-400 shadow p-4 text-black"
+              type="text"
+              placeholder="Ecris ta réponse..."
+            />
+          </form>
+          <img
+            id="img_send"
+            class="pt-10 w-20 pl-5"
+            src="https://cdn.glitch.global/d9fac2fb-dd5e-4283-800f-e504a6e4a40c/send.png?v=1666540053322"
+          />
+        </div>
+      </div>
+
+      <div
+        class="bg-red-500 h-full w-auto rounded p-6 shadow-md border border-black text-white overflow-auto"
+        id="mp_game"
+      >
+        <ul id="mpChat">
+          <li><label id="username"></label></li>
+        </ul>
+      </div>
     </div>
-    	
+
+    <!-- PRIVATE MESSAGE -->
+    <div
+      class="container h-screen m-auto flex justify-center items-center hidden"
+      id="private_message"
+    >
+      <div
+        class="bg-red-500 h-full w-10/12 rounded p-6 shadow-md border border-black text-white overflow-auto"
+        id="pm_game"
+      >
+        <img
+          id="img_retour"
+          class="fixed w-20 pl-5 pb-5"
+          src="https://cdn.glitch.global/d9fac2fb-dd5e-4283-800f-e504a6e4a40c/back.png?v=1666547461453"
+        />
+        <ul id="privateChat" class="pt-10">
+          <li></li>
+        </ul>
+        <div class="mt-10 pt-5 w-full flex-col">
+          <form id="form_pm" class="pb-10 fixed bottom-0 w-2/3 rounded">
+            <input
+              id="reponse_pv"
+              class="bg-pink-300 d-block rounded w-2/3 border border-pink-400 shadow p-4 text-black"
+              type="text"
+              placeholder="Ecris ta réponse..."
+            />
+          </form>
+        </div>
+      </div>
+    </div>
   </body>
   <!--import script -->
   <script src="/script.js"></script>
