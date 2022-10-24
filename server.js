@@ -285,7 +285,7 @@ io.on("connection", function (socket) {
     ClearGame();
   });
 
-  //del messaged
+  //afficher le score final
   socket.on("VoirPoints", (data) => {
     const leaderboard = players
       .sort((a, b) => b.points - a.points)
@@ -293,7 +293,7 @@ io.on("connection", function (socket) {
     io.emit("AfficherPoints", leaderboard);
   });
 
-  //del message
+  //on récupère les réponses 
   socket.on("reponse_relier", function (name, reponses) {
     for (let i = 0; i < players.length; i++) {
       if (players[i].name == name) {
