@@ -5,9 +5,17 @@ const io = require("socket.io")(http);
 
 let players = [];
 let pseudo_Joueur = ["Maurice", "Léo", "Adrien", "Jean-Paul", "Robert"];
+let image_Joueur = [
+  "https://cdn.glitch.global/d9fac2fb-dd5e-4283-800f-e504a6e4a40c/MauricePhoto.png?v=1666706514454",
+  "https://cdn.glitch.global/d9fac2fb-dd5e-4283-800f-e504a6e4a40c/LeoPhoto.png?v=1666706516146",
+  "https://cdn.glitch.global/d9fac2fb-dd5e-4283-800f-e504a6e4a40c/AdrienPhoto.png?v=1666706516325",
+  "https://cdn.glitch.global/d9fac2fb-dd5e-4283-800f-e504a6e4a40c/JeanPaulPhoto.png?v=1666706516235",
+  "https://cdn.glitch.global/d9fac2fb-dd5e-4283-800f-e504a6e4a40c/RobertPhoto.png?v=1666706514835",
+];
 let compteur_question = 0;
 let NombrePrenom = getRandomIntInclusive(0, 4);
 let prenomJoueur = pseudo_Joueur[NombrePrenom];
+let photoJoueur = "";
 
 let Questionnaire = [
   {
@@ -154,6 +162,7 @@ io.on("connection", function (socket) {
   socket.on("user_join", (name) => {
     NombrePrenom = getRandomIntInclusive(0, 4);
     prenomJoueur = pseudo_Joueur[NombrePrenom];
+    photoJoueur = image_Joueur[NombrePrenom];
 
     CheckPlayer(prenomJoueur);
 
@@ -162,6 +171,7 @@ io.on("connection", function (socket) {
       name,
       points: 0,
       pseudo: prenomJoueur,
+      image: photoJoueur,
     };
     //on ajoute le joueur a la liste de joueurs
     players.push(player);
@@ -254,11 +264,18 @@ io.on("connection", function (socket) {
   socket.on("reponse_afficher_final", function (reponses) {
     let playersName = [];
     let playersPseudo = [];
+    let imagesJoueur = [];
     for (let i = 0; i < players.length; i++) {
       playersName[i] = players[i].name;
       playersPseudo[i] = players[i].pseudo;
+      imagesJoueur[i] = players[i].image;
     }
-    io.emit("reponse_afficher_final_All", playersName, playersPseudo);
+    io.emit(
+      "reponse_afficher_final_All",
+      playersName,
+      playersPseudo,
+      imagesJoueur
+    );
   });
 
   //add message
@@ -285,7 +302,7 @@ io.on("connection", function (socket) {
     ClearGame();
   });
 
-  //afficher le score final
+  //del messaged
   socket.on("VoirPoints", (data) => {
     const leaderboard = players
       .sort((a, b) => b.points - a.points)
@@ -293,7 +310,7 @@ io.on("connection", function (socket) {
     io.emit("AfficherPoints", leaderboard);
   });
 
-  //on récupère les réponses 
+  //del message
   socket.on("reponse_relier", function (name, reponses) {
     for (let i = 0; i < players.length; i++) {
       if (players[i].name == name) {
@@ -334,7 +351,13 @@ function CheckPlayer(pseudo) {
 
 function CheckReponsePoints(id) {
   let JoueurNombre = players.length;
-  let ReponsesNumero = ["reponses31","reponses32","reponses33","reponses34","reponses35" ];
+  let ReponsesNumero = [
+    "reponses31",
+    "reponses32",
+    "reponses33",
+    "reponses34",
+    "reponses35",
+  ];
   for (let j = 0; j < players.length; j++) {
     if (players[j].id == id) {
       for (let k = 0; k < JoueurNombre; k++) {
@@ -364,6 +387,7 @@ function increasePoints(id) {
 function setPseudo() {
   NombrePrenom = getRandomIntInclusive(0, 4);
   prenomJoueur = pseudo_Joueur[NombrePrenom];
+  photoJoueur = image_Joueur[NombrePrenom];
   CheckPlayer(prenomJoueur);
 }
 
@@ -375,10 +399,12 @@ function ClearGame() {
 function updateGame() {
   io.emit("send_question", Questionnaire[compteur_question]);
   let pseudoJoueurs = [];
+  let imageJoueurs = [];
   for (let i = 0; i < players.length; i++) {
     pseudoJoueurs[i] = players[i].pseudo;
+    imageJoueurs[i] = players[i].image;
   }
-  io.emit("update_players", pseudoJoueurs);
+  io.emit("update_players", pseudoJoueurs, imageJoueurs);
 }
 
 function CheckReponse() {

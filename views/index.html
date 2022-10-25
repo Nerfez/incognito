@@ -3,6 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <title>Incognito par Clément !</title>
+    <link
+      rel="shortcut icon"
+      type="x-icon"
+      href="https://cdn.glitch.global/d9fac2fb-dd5e-4283-800f-e504a6e4a40c/IncognitoLogo.png?v=1666701935787"
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--import css -->
     <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
@@ -46,14 +51,20 @@
 
     <!-- RESULTATS -->
     <div
-      class="container h-screen m-auto flex flex-col justify-center items-center hidden"
+      class="container h-screen m-auto flex flex-col grid place-items-center hidden"
       id="outro_finale"
     >
-      <div class="h-full overflow-auto justify-center items-center">
+      <div class="justify-center grid place-items-center">
         <h1 class="text-3xl text-white">Découvrez qui était qui !</h1>
 
+        <img
+          id="img_final"
+          src="https://cdn.glitch.global/d9fac2fb-dd5e-4283-800f-e504a6e4a40c/send.png?v=1666540053322"
+        />
         <h1 id="vrai_pseudo" class="text-2xl text-white">Maurice était ...</h1>
-        <h1 id="vrai_prenom" class="text-2xl text-black hidden">zefren</h1>
+        <h1 id="vrai_prenom" class="zoom-in-out-box text-2xl text-black hidden">
+          zefren
+        </h1>
       </div>
     </div>
 
@@ -211,7 +222,7 @@
         class="bg-red-500 h-full w-auto rounded p-6 shadow-md border border-black text-white overflow-auto"
         id="mp_game"
       >
-        <ul id="mpChat">
+        <ul id="mpChat" class="flex flex-col items-center">
           <li><label id="username"></label></li>
         </ul>
       </div>

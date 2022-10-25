@@ -10,15 +10,10 @@ const classement = document.getElementById("leaderboard");
 const img_retour = document.getElementById("img_retour");
 const img_send = document.getElementById("img_send");
 const reponse_finale = document.getElementById("reponse_finale");
-//Button pour voir l'historique des réponses du joueur 1
 const joueur_1 = document.getElementById("joueur_1");
-//Button pour voir l'historique des réponses du joueur 2
 const joueur_2 = document.getElementById("joueur_2");
-//Button pour voir l'historique des réponses du joueur 3
 const joueur_3 = document.getElementById("joueur_3");
-//Button pour voir l'historique des réponses du joueur 4
 const joueur_4 = document.getElementById("joueur_4");
-//Button pour voir l'historique des réponses du joueur 5
 const joueur_5 = document.getElementById("joueur_5");
 //TIMER
 const timer = document.getElementById("timer");
@@ -36,7 +31,6 @@ let playersNameRecu = [];
 let playersPointsRecu = [];
 let pseudoQuiNousDM = "";
 
-//on affiche l'historique des réponses
 joueur_1.addEventListener("click", function (e) {
   socket.emit("voirReponsesJoueur", "joueur1", name);
 });
@@ -173,7 +167,11 @@ document.getElementById("mpChat").addEventListener("click", function (e) {
   for (let i = 0; i < collection.length; i++) {
     collection[i].style.color = "white";
   }
-  if (e.target && e.target.matches("li")) {
+  if (
+    e.target &&
+    e.target.matches("li") &&
+    e.target.innerText != "Vous(" + pseudoJoueur + ")"
+  ) {
     //on supprime le chat general
     game.classList.add("hidden");
     //on affiche les dm du mec e.target.innerText
@@ -242,15 +240,22 @@ function counterStyle() {
   }
 }
 
+function playSound(audioName) {
+  let audio = new Audio(audioName);
+  audio.play();
+}
+
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function AfficherRep(prenom, pseudo) {
+async function AfficherRep(prenom, pseudo, imageRecu) {
   let j = 0;
   let k = prenom.length;
   do {
     for (let i = 0; i < 5; i++) {
+      document.getElementById("img_final").style.width = "72px";
+      document.getElementById("img_final").src = imageRecu[j];
       document.getElementById("vrai_pseudo").innerHTML =
         pseudo[j] + " était ...";
       document.getElementById("vrai_prenom").innerHTML = prenom[j];
@@ -284,7 +289,7 @@ function StartGame() {
     node1.style.marginTop = "10px";
     node1.setAttribute("id", "titre2");
     node1.innerHTML = questionnaire.question;
-    
+
     //////////////////////
     node2.appendChild(textnode2);
     node2.style.fontSize = "small";
@@ -305,7 +310,7 @@ function StartGame() {
     ${leaderboard
       .map(
         (player) =>
-          `<li class="flex justify-between"><strong>${player.name}</strong> ${player.points}</li>`
+          `<li class="flex justify-between items-center"> <img class="w-20 h-20" src="${player.image}"/><strong>${player.name}</strong> ${player.points}</li>`
       )
       .join("")}
     `;
@@ -348,18 +353,23 @@ function StartGame() {
     }
   );
 
-  socket.on("reponse_afficher_final_All", function (prenom, pseudo) {
-    let prenomRecu = [];
-    let pseudoRecu = [];
-    for (let i = 0; i < prenom.length; i++) {
-      prenomRecu[i] = prenom[i];
-      pseudoRecu[i] = pseudo[i];
+  socket.on(
+    "reponse_afficher_final_All",
+    function (prenom, pseudo, imagesJoueur) {
+      let prenomRecu = [];
+      let pseudoRecu = [];
+      let imageRecu = [];
+      for (let i = 0; i < prenom.length; i++) {
+        prenomRecu[i] = prenom[i];
+        pseudoRecu[i] = pseudo[i];
+        imageRecu[i] = imagesJoueur[i];
+      }
+      outro_relier.classList.add("hidden");
+      document.getElementById("historique_joueur").classList.add("hidden");
+      outro_finale.classList.remove("hidden");
+      AfficherRep(prenomRecu, pseudoRecu, imageRecu);
     }
-    outro_relier.classList.add("hidden");
-    document.getElementById("historique_joueur").classList.add("hidden");
-    outro_finale.classList.remove("hidden");
-    AfficherRep(prenomRecu, pseudoRecu);
-  });
+  );
 
   socket.on("debutRelier", function (noms) {
     start();
@@ -400,7 +410,12 @@ function StartGame() {
   });
 
   socket.on("updateNotif", function (pseudoJoueurEnvoi, pseudoJoueurRecu) {
+    console.log(
+      "message de : " + pseudoJoueurEnvoi + " a : " + pseudoJoueurRecu
+    );
+    console.log("je suis : " + pseudoJoueur);
     if (pseudoJoueur == pseudoJoueurRecu) {
+      console.log("changement de couleur de : " + pseudoJoueurEnvoi);
       const collection = document
         .getElementById("mpChat")
         .getElementsByTagName("li");
@@ -441,10 +456,13 @@ function StartGame() {
         node2.style["float"] = "right";
         //si c'est pas nous
       } else if (PseudoEnvoi != pseudoJoueur) {
-        if(pseudoQuiNousDM != PseudoEnvoi){
-        document.getElementById("privateChat").appendChild(node3);
+        if (pseudoQuiNousDM != PseudoEnvoi) {
+          document.getElementById("privateChat").appendChild(node3);
         }
         document.getElementById("privateChat").appendChild(node1);
+        playSound(
+          "https://cdn.glitch.global/d9fac2fb-dd5e-4283-800f-e504a6e4a40c/messageRecu.mp3?v=1666703414083"
+        );
       }
       document.getElementById("privateChat").appendChild(node2);
       $("#pm_game").scrollTop($("#pm_game")[0].scrollHeight);
@@ -452,20 +470,25 @@ function StartGame() {
     }
   });
 
-  socket.on("update_players", function (data) {
+  socket.on("update_players", function (Datapseudo, Dataimage) {
     document.getElementById("mpChat").innerHTML = "";
-    data.sort();
-    for (let i = 0; i < data.length; i++) {
-      if (data[i] == pseudoJoueur) {
-        data[i] = "Vous(" + data[i] + ")";
+    Datapseudo.sort();
+    Dataimage.sort();
+    for (let i = 0; i < Datapseudo.length; i++) {
+      if (Datapseudo[i] == pseudoJoueur) {
+        Datapseudo[i] = "Vous(" + Datapseudo[i] + ")";
       }
       const node1 = document.createElement("li");
-      const textnode1 = document.createTextNode(data[i]);
+      const textnode1 = document.createTextNode(Datapseudo[i]);
+      var _img = document.createElement("img");
+      _img.src = Dataimage[i];
+      _img.style.width = "72px";
       node1.appendChild(textnode1);
       node1.style.fontSize = "x-large";
       node1.style.width = "max-content";
       node1.style["margin"] = "auto";
       node1.style.marginTop = "5px";
+      document.getElementById("mpChat").appendChild(_img);
       document.getElementById("mpChat").appendChild(node1);
     }
   });
@@ -493,6 +516,9 @@ function StartGame() {
       node2.style["float"] = "right";
     } else if (NamePlayer != pseudoJoueur) {
       document.getElementById("mychat").appendChild(node1);
+      playSound(
+        "https://cdn.glitch.global/d9fac2fb-dd5e-4283-800f-e504a6e4a40c/messageEnvoi.mp3?v=1666703413833"
+      );
     }
     document.getElementById("mychat").appendChild(node2);
     $("#all_game").scrollTop($("#all_game")[0].scrollHeight);

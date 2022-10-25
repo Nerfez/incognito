@@ -35,7 +35,7 @@
 
 #titre2:before,
 #titre2:after {
-  background-color: #1260CC;
+  background-color: #1260cc;
   content: "";
   display: inline-block;
   height: 3px;
@@ -52,4 +52,30 @@
 #titre2:after {
   left: 0.5em;
   margin-right: -50%;
+}
+
+.zoom-in-out-box {
+  margin: 24px;
+  animation: zoom-in-zoom-out 1s ease infinite;
+}
+
+@keyframes zoom-in-zoom-out {
+  0% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.5, 1.5);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(252 165 165);
 }
