@@ -182,7 +182,7 @@ io.on("connection", function (socket) {
 
     socket.emit("pseudo_joueur", prenomJoueur);
 
-    ClearGame();
+    AttenteUpdate();
   });
 
   socket.on("send_response", function (name, reponse) {
@@ -302,6 +302,11 @@ io.on("connection", function (socket) {
     ClearGame();
   });
 
+  socket.on("CommencerJeu", (reponseDuJoueur) => {
+    io.emit("StartGame", "lancer le jeu");
+    ClearGame();
+  });
+
   //del messaged
   socket.on("VoirPoints", (data) => {
     const leaderboard = players
@@ -332,6 +337,14 @@ io.on("connection", function (socket) {
     console.log(socket.id, " vient de se deconnecter");
   });
 });
+
+function AttenteUpdate() {
+  let pseudoJoueurs = [];
+  for (let i = 0; i < players.length; i++) {
+    pseudoJoueurs[i] = players[i].name;
+  }
+  io.emit("update_Attente", pseudoJoueurs);
+}
 
 function CheckPlayer(pseudo) {
   let boolean = [];

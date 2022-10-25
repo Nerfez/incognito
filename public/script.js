@@ -2,6 +2,7 @@ const pseudo = document.getElementById("form_pseudo");
 const submission = document.getElementById("form_jeu");
 const submission_pm = document.getElementById("form_pm");
 const intro = document.getElementById("intro");
+const attente = document.getElementById("salle_attente");
 const game = document.getElementById("game");
 const outro_relier = document.getElementById("outro_relier");
 const outro_finale = document.getElementById("outro_finale");
@@ -30,6 +31,10 @@ let reponseMaurice = [];
 let playersNameRecu = [];
 let playersPointsRecu = [];
 let pseudoQuiNousDM = "";
+
+document.getElementById("lancer_jeu").addEventListener("click", function (e) {
+  socket.emit("CommencerJeu", "start");
+});
 
 joueur_1.addEventListener("click", function (e) {
   socket.emit("voirReponsesJoueur", "joueur1", name);
@@ -102,9 +107,8 @@ pseudo.addEventListener("submit", function (evt) {
 
     //on indique le pseudo du joueur qui vient de se connecter
     socket.emit("user_join", name);
-
-    StartGame();
   }
+  StartGame();
 });
 
 submission.addEventListener("submit", function (evt) {
@@ -182,7 +186,7 @@ document.getElementById("mpChat").addEventListener("click", function (e) {
 
 //timer en secondes
 const departMinutes = 3;
-let temps = 30;
+let temps = 50;
 //departMinutes * 60
 
 //lancement timer
@@ -242,6 +246,7 @@ function counterStyle() {
 
 function playSound(audioName) {
   let audio = new Audio(audioName);
+  audio.volume = 0.5;
   audio.play();
 }
 
@@ -275,7 +280,7 @@ function StartGame() {
   //on supprime le champs de texte pseudo
   intro.classList.add("hidden");
   //on affiche les questions
-  game.classList.remove("hidden");
+  attente.classList.remove("hidden");
 
   socket.on("send_question", (questionnaire) => {
     const node1 = document.createElement("li");
@@ -300,10 +305,6 @@ function StartGame() {
     $("#all_game").scrollTop($("#all_game")[0].scrollHeight);
   });
 
-  socket.on("delete_chat", function (data) {
-    document.getElementById("mychat").innerHTML = "";
-  });
-
   socket.on("AfficherPoints", (leaderboard) => {
     document.getElementById("points_joueur").classList.remove("hidden");
     classement.innerHTML = `
@@ -318,6 +319,40 @@ function StartGame() {
 
   socket.on("pseudo_joueur", function (data) {
     pseudoJoueur = data;
+  });
+
+  socket.on("delete_chat", function (data) {
+    document.getElementById("mychat").innerHTML = "";
+  });
+
+  socket.on("StartGame", function (data) {
+    attente.classList.add("hidden");
+    game.classList.remove("hidden");
+  });
+
+  socket.on("update_Attente", function (pseudoJoueursAttente) {
+    let playersNameRecu = [];
+    let playersImageRecu =
+      "https://cdn.glitch.global/d9fac2fb-dd5e-4283-800f-e504a6e4a40c/incconnu.png?v=1666717467513";
+    for (let i = 0; i < pseudoJoueursAttente.length; i++) {
+      playersNameRecu[i] = pseudoJoueursAttente[i];
+    }
+    document.getElementById("salle_joueur").innerHTML = "";
+    playersNameRecu.sort();
+    for (let i = 0; i < playersNameRecu.length; i++) {
+      const node1 = document.createElement("li");
+      const textnode1 = document.createTextNode(playersNameRecu[i]);
+      var _img = document.createElement("img");
+      _img.src = playersImageRecu;
+      _img.style.width = "72px";
+      node1.appendChild(textnode1);
+      node1.style.fontSize = "x-large";
+      node1.style.width = "max-content";
+      node1.style["margin"] = "auto";
+      node1.style.marginTop = "5px";
+      document.getElementById("salle_joueur").appendChild(_img);
+      document.getElementById("salle_joueur").appendChild(node1);
+    }
   });
 
   socket.on(
@@ -410,10 +445,6 @@ function StartGame() {
   });
 
   socket.on("updateNotif", function (pseudoJoueurEnvoi, pseudoJoueurRecu) {
-    console.log(
-      "message de : " + pseudoJoueurEnvoi + " a : " + pseudoJoueurRecu
-    );
-    console.log("je suis : " + pseudoJoueur);
     if (pseudoJoueur == pseudoJoueurRecu) {
       console.log("changement de couleur de : " + pseudoJoueurEnvoi);
       const collection = document

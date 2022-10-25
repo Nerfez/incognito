@@ -87,7 +87,7 @@
         </h1>
 
         <div id="duo_un" class="space-x-20 pl-20 ml-20 pt-5">
-          <input type="button" id="joueur_1" value="Adrien" />
+          <input class="cursor-pointer" type="button" id="joueur_1" value="Adrien" />
           <select name="pseudo" id="pseudo-select">
             <option value="">--Choisis un pseudo--</option>
             <option value="Adrien">Adrien</option>
@@ -99,7 +99,7 @@
         </div>
 
         <div id="duo_deux" class="space-x-20 pl-20 ml-20 pt-5">
-          <input type="button" id="joueur_2" value="Paul" />
+          <input class="cursor-pointer" type="button" id="joueur_2" value="Paul" />
           <select name="pseudo" id="pseudo-select2">
             <option value="">--Choisis un pseudo--</option>
             <option value="Adrien">Adrien</option>
@@ -111,7 +111,7 @@
         </div>
 
         <div id="duo_trois" class="space-x-20 pl-20 ml-20 pt-5">
-          <input type="button" id="joueur_3" value="Paul" />
+          <input class="cursor-pointer" type="button" id="joueur_3" value="Paul" />
           <select name="pseudo" id="pseudo-select3">
             <option value="">--Choisis un pseudo--</option>
             <option value="Adrien">Adrien</option>
@@ -123,7 +123,7 @@
         </div>
 
         <div id="duo_quatre" class="space-x-20 pl-20 ml-20 pt-5">
-          <input type="button" id="joueur_4" value="Paul" />
+          <input class="cursor-pointer" type="button" id="joueur_4" value="Paul" />
           <select name="pseudo" id="pseudo-select4">
             <option value="">--Choisis un pseudo--</option>
             <option value="Adrien">Adrien</option>
@@ -135,7 +135,7 @@
         </div>
 
         <div id="duo_cinq" class="space-x-20 pl-20 ml-20 pt-5">
-          <input type="button" id="joueur_5" value="Paul" />
+          <input class="cursor-pointer" type="button" id="joueur_5" value="Paul" />
           <select name="pseudo" id="pseudo-select5">
             <option value="">--Choisis un pseudo--</option>
             <option value="Adrien">Adrien</option>
@@ -166,13 +166,32 @@
       >
         <img
           id="img_retour2"
-          class="fixed w-20 pl-5 pb-5"
+          class="fixed w-20 pl-5 pb-5 cursor-pointer"
           src="https://cdn.glitch.global/d9fac2fb-dd5e-4283-800f-e504a6e4a40c/back.png?v=1666547461453"
         />
         <ul id="HistoriqueChat" class="pt-10 text-black">
           <li></li>
         </ul>
       </div>
+    </div>
+    
+        <!-- SALLE D ATTENTE -->
+    <div
+      class="container m-auto h-screen list-none flex flex-col justify-center items-center hidden"
+      id="salle_attente"
+    >
+      <div
+        class="bg-red-500 w-10/12 rounded p-6 shadow-md border border-black text-white overflow-auto items-center"
+        id="attente_game"
+      >
+        <h1 class="text-4xl text-white">Attente des joueurs ...</h1>
+        <ul id="salle_joueur" class="pt-10 text-black float-left flex"></ul>
+      </div>
+      <input
+          id="lancer_jeu"
+          class="bg-pink-300 hover:bg-red-500 d-block border rounded-full border-pink-400 shadow p-4 text-black mt-2 h-20 w-40"
+          type="button" value="Commencer"
+        />
     </div>
 
     <!-- AFFICHER POINTS -->
@@ -212,7 +231,7 @@
           </form>
           <img
             id="img_send"
-            class="pt-10 w-20 pl-5"
+            class="pt-10 w-20 pl-5 cursor-pointer"
             src="https://cdn.glitch.global/d9fac2fb-dd5e-4283-800f-e504a6e4a40c/send.png?v=1666540053322"
           />
         </div>
@@ -239,7 +258,7 @@
       >
         <img
           id="img_retour"
-          class="fixed w-20 pl-5 pb-5"
+          class="fixed w-20 pl-5 pb-5 cursor-pointer"
           src="https://cdn.glitch.global/d9fac2fb-dd5e-4283-800f-e504a6e4a40c/back.png?v=1666547461453"
         />
         <ul id="privateChat" class="pt-10">
