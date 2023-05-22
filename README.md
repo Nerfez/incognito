@@ -50,3 +50,5 @@ Si vous lancez ça depuis une invite de commande un ctrl + c devrait suffire mai
 En cas d'erreur, n'hésitez pas à [créer une demande](https://github.com/Nerfez/incognito/issues) avec les détails qui conviennent pour que je puisse le corriger.
 Ou à me contacter sur twitter : @Zefren_
 
+En ce qui concerne le projet en lui-même, vous pouvez tout reprendre pour l'améliorer et en faire ce que vous voulez.
+
