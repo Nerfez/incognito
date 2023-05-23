@@ -284,6 +284,7 @@ io.on("connection", function (socket) {
       io.emit("updateNewMessage", pseudoJoueur, reponseDuJoueur);
     } else if (reponseDuJoueur == "ChronoStart123") {
       let noms = [];
+	  let pseudo = [];
       let reponseLeo = [];
       let reponseAdrien = [];
       let reponseRobert = [];
@@ -291,9 +292,10 @@ io.on("connection", function (socket) {
       let reponseMaurice = [];
       for (let i = 0; i < players.length; i++) {
         noms[i] = players[i].name;
+		pseudo[i] = players[i].pseudo;
       }
       for (let k = 0; k < players.length; k++) {}
-      io.emit("debutRelier", noms);
+      io.emit("debutRelier", noms, pseudo);
     }
   });
 
@@ -307,7 +309,7 @@ io.on("connection", function (socket) {
     ClearGame();
   });
 
-  //del messaged
+  //del message
   socket.on("VoirPoints", (data) => {
     const leaderboard = players
       .sort((a, b) => b.points - a.points)
@@ -374,8 +376,8 @@ function CheckReponsePoints(id) {
   for (let j = 0; j < players.length; j++) {
     if (players[j].id == id) {
       for (let k = 0; k < JoueurNombre; k++) {
-        if (players[k].hasOwnProperty("pseudo")) {
-          if (players[j][ReponsesNumero[k]] == players[k].pseudo) {
+        if (players[k].hasOwnProperty("name")) {
+          if (players[j][ReponsesNumero[k]] == players[k].name) {
             increasePoints(id);
           }
         }
