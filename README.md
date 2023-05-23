@@ -1,6 +1,8 @@
 # incognito
 
 Inspiré du jeu de la cacabox, c'est un jeu à plusieurs où l'on doit deviner les personnes derrière les pseudo anonyme à travers 30 questions.
+[![Glitch](https://img.shields.io/badge/glitch-%233333FF.svg?style=for-the-badge&logo=glitch&logoColor=white)]()
+[![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)]()
 
 ## 📌 Présentation
 
