@@ -4,7 +4,7 @@ const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 
 let players = [];
-let pseudo_Joueur = ["Maurice", "Léo", "Adrien", "Jean-Paul", "Robert"];
+let pseudo_Joueur = [process.env.PLAYER1, process.env.PLAYER2, process.env.PLAYER3, process.env.PLAYER4, process.env.PLAYER5];
 let image_Joueur = [
   "https://cdn.glitch.global/d9fac2fb-dd5e-4283-800f-e504a6e4a40c/MauricePhoto.png?v=1666706514454",
   "https://cdn.glitch.global/d9fac2fb-dd5e-4283-800f-e504a6e4a40c/LeoPhoto.png?v=1666706516146",
@@ -17,6 +17,9 @@ let NombrePrenom = getRandomIntInclusive(0, 4);
 let prenomJoueur = pseudo_Joueur[NombrePrenom];
 let photoJoueur = "";
 
+///////////////////////////////////////////
+// DEBUT DES QUESTIONS   //////////////////
+//////////////////////////////////////////
 let Questionnaire = [
   {
     question: "Comment allez vous ?",
@@ -151,6 +154,9 @@ let Questionnaire = [
     numero: "Demutez vous",
   },
 ];
+///////////////////////////////////////////
+// FIN DES QUESTIONS   ////////////////////
+//////////////////////////////////////////
 
 app.use(express.static(__dirname + "/public"));
 
@@ -280,22 +286,10 @@ io.on("connection", function (socket) {
 
   //add message
   socket.on("user_message", function (pseudoJoueur, reponseDuJoueur) {
-    if (reponseDuJoueur != "ChronoStart123") {
+    if (reponseDuJoueur != process.env.SKIPPING) {
       io.emit("updateNewMessage", pseudoJoueur, reponseDuJoueur);
-    } else if (reponseDuJoueur == "ChronoStart123") {
-      let noms = [];
-	  let pseudo = [];
-      let reponseLeo = [];
-      let reponseAdrien = [];
-      let reponseRobert = [];
-      let reponseJeanPaul = [];
-      let reponseMaurice = [];
-      for (let i = 0; i < players.length; i++) {
-        noms[i] = players[i].name;
-		pseudo[i] = players[i].pseudo;
-      }
-      for (let k = 0; k < players.length; k++) {}
-      io.emit("debutRelier", noms, pseudo);
+    } else if (reponseDuJoueur == process.env.SKIPPING) {
+      DebutRelier();
     }
   });
 
@@ -412,6 +406,10 @@ function ClearGame() {
 }
 
 function updateGame() {
+  if (compteur_question >= 30) {
+    DebutRelier();
+    return;
+  }
   io.emit("send_question", Questionnaire[compteur_question]);
   let pseudoJoueurs = [];
   let imageJoueurs = [];
@@ -420,6 +418,21 @@ function updateGame() {
     imageJoueurs[i] = players[i].image;
   }
   io.emit("update_players", pseudoJoueurs, imageJoueurs);
+}
+
+function DebutRelier() {
+  let noms = [];
+  let pseudo = [];
+  let reponseLeo = [];
+  let reponseAdrien = [];
+  let reponseRobert = [];
+  let reponseJeanPaul = [];
+  let reponseMaurice = [];
+  for (let i = 0; i < players.length; i++) {
+    noms[i] = players[i].name;
+    pseudo[i] = players[i].pseudo;
+  }
+  io.emit("debutRelier", noms, pseudo);
 }
 
 function CheckReponse() {
