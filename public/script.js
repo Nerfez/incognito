@@ -408,155 +408,48 @@ function StartGame() {
 
   socket.on("debutRelier", function (noms, pseudo) {
     start();
-    const sel1 = document.getElementById("pseudo-select");
-    const sel2 = document.getElementById("pseudo-select2");
-    const sel3 = document.getElementById("pseudo-select3");
-    const sel4 = document.getElementById("pseudo-select4");
-    const sel5 = document.getElementById("pseudo-select5");
-    const opt1a = document.createElement("option");
-    const opt1b = document.createElement("option");
-    const opt1c = document.createElement("option");
-    const opt1d = document.createElement("option");
-    const opt1e = document.createElement("option");
-    opt1a.value = noms[0];
-    opt1a.text = noms[0];
-    opt1b.value = noms[0];
-    opt1b.text = noms[0];
-    opt1c.value = noms[0];
-    opt1c.text = noms[0];
-    opt1d.value = noms[0];
-    opt1d.text = noms[0];
-    opt1e.value = noms[0];
-    opt1e.text = noms[0];
-    const opt2a = document.createElement("option");
-    const opt2b = document.createElement("option");
-    const opt2c = document.createElement("option");
-    const opt2d = document.createElement("option");
-    const opt2e = document.createElement("option");
-    opt2a.value = noms[1];
-    opt2a.text = noms[1];
-    opt2b.value = noms[1];
-    opt2b.text = noms[1];
-    opt2c.value = noms[1];
-    opt2c.text = noms[1];
-    opt2d.value = noms[1];
-    opt2d.text = noms[1];
-    opt2e.value = noms[1];
-    opt2e.text = noms[1];
-    const opt3a = document.createElement("option");
-    const opt3b = document.createElement("option");
-    const opt3c = document.createElement("option");
-    const opt3d = document.createElement("option");
-    const opt3e = document.createElement("option");
-    opt3a.value = noms[2];
-    opt3a.text = noms[2];
-    opt3b.value = noms[2];
-    opt3b.text = noms[2];
-    opt3c.value = noms[2];
-    opt3c.text = noms[2];
-    opt3d.value = noms[2];
-    opt3d.text = noms[2];
-    opt3e.value = noms[2];
-    opt3e.text = noms[2];
-    const opt4a = document.createElement("option");
-    const opt4b = document.createElement("option");
-    const opt4c = document.createElement("option");
-    const opt4d = document.createElement("option");
-    const opt4e = document.createElement("option");
-    opt4a.value = noms[3];
-    opt4a.text = noms[3];
-    opt4b.value = noms[3];
-    opt4b.text = noms[3];
-    opt4c.value = noms[3];
-    opt4c.text = noms[3];
-    opt4d.value = noms[3];
-    opt4d.text = noms[3];
-    opt4e.value = noms[3];
-    opt4e.text = noms[3];
-    const opt5a = document.createElement("option");
-    const opt5b = document.createElement("option");
-    const opt5c = document.createElement("option");
-    const opt5d = document.createElement("option");
-    const opt5e = document.createElement("option");
-    opt5a.value = noms[4];
-    opt5a.text = noms[4];
-    opt5b.value = noms[4];
-    opt5b.text = noms[4];
-    opt5c.value = noms[4];
-    opt5c.text = noms[4];
-    opt5d.value = noms[4];
-    opt5d.text = noms[4];
-    opt5e.value = noms[4];
-    opt5e.text = noms[4];
-    
-      if(pseudo[0] != null){
-      sel1.add(opt1a, null);
-      sel2.add(opt1b, null);
-      sel3.add(opt1c, null);
-      sel4.add(opt1d, null);
-      sel5.add(opt1e, null);
+    const players = [
+      { buttonId: "joueur_1", selectId: "pseudo-select", divId: "duo_un" },
+      { buttonId: "joueur_2", selectId: "pseudo-select2", divId: "duo_deux" },
+      { buttonId: "joueur_3", selectId: "pseudo-select3", divId: "duo_trois" },
+      { buttonId: "joueur_4", selectId: "pseudo-select4", divId: "duo_quatre" },
+      { buttonId: "joueur_5", selectId: "pseudo-select5", divId: "duo_cinq" },
+    ];
+
+    for (let i = 0; i < players.length; i++) {
+      const player = players[i];
+      const playerDiv = document.getElementById(player.divId);
+
+      if (i < pseudo.length) {
+        // Afficher le joueur et son sélecteur
+        playerDiv.style.display = "block";
+        const button = document.getElementById(player.buttonId);
+        button.value = pseudo[i];
+        button.style.background = "#ffb6c1";
+        button.style.borderRadius = "25px";
+        button.style.width = "max-content";
+        button.style.paddingLeft = "5px";
+        button.style.paddingRight = "5px";
+      } else {
+        // Masquer le joueur et son sélecteur s'il n'est pas présent
+        playerDiv.style.display = "none";
+      }
     }
-    if(pseudo[1] != null){
-      sel1.add(opt2a, null);
-      sel2.add(opt2b, null);
-      sel3.add(opt2c, null);
-      sel4.add(opt2d, null);
-      sel5.add(opt2e, null);
+
+    // Alimenter chaque select avec les joueurs disponibles
+    for (let i = 0; i < pseudo.length; i++) {
+      for (let j = 0; j < players.length; j++) {
+        const select = document.getElementById(players[j].selectId);
+        const opt = document.createElement("option");
+        opt.value = pseudo[i];
+        opt.text = pseudo[i];
+        select.appendChild(opt);
       }
-    if(pseudo[2] != null){
-      sel1.add(opt3a, null);
-      sel2.add(opt3b, null);
-      sel3.add(opt3c, null);
-      sel4.add(opt3d, null);
-      sel5.add(opt3e, null);
-      }
-    if(pseudo[3] != null){
-      sel1.add(opt4a, null);
-      sel2.add(opt4b, null);
-      sel3.add(opt4c, null);
-      sel4.add(opt4d, null);
-      sel5.add(opt4e, null);
-      }
-    if(pseudo[4] != null){
-      sel1.add(opt5a, null);
-      sel2.add(opt5b, null);
-      sel3.add(opt5c, null);
-      sel4.add(opt5d, null);
-      sel5.add(opt5e, null);
-      }
-    joueur_1.setAttribute("value", pseudo[0]);
-    joueur_1.style.background = "	#ffb6c1";
-    joueur_1.style.borderRadius = "25px";
-    joueur_1.style.width = "max-content";
-    joueur_1.style.paddingLeft = "5px";
-    joueur_1.style.paddingRight = "5px";
-    joueur_2.setAttribute("value", pseudo[1]);
-    joueur_2.style.background = "	#ffb6c1";
-    joueur_2.style.borderRadius = "25px";
-    joueur_2.style.width = "max-content";
-    joueur_2.style.paddingLeft = "5px";
-    joueur_2.style.paddingRight = "5px";
-    joueur_3.setAttribute("value", pseudo[2]);
-    joueur_3.style.background = "	#ffb6c1";
-    joueur_3.style.borderRadius = "25px";
-    joueur_3.style.width = "max-content";
-    joueur_3.style.paddingLeft = "5px";
-    joueur_3.style.paddingRight = "5px";
-    joueur_4.setAttribute("value", pseudo[3]);
-    joueur_4.style.background = "	#ffb6c1";
-    joueur_4.style.borderRadius = "25px";
-    joueur_4.style.width = "max-content";
-    joueur_4.style.paddingLeft = "5px";
-    joueur_4.style.paddingRight = "5px";
-    joueur_5.setAttribute("value", pseudo[4]);
-    joueur_5.style.background = "	#ffb6c1";
-    joueur_5.style.width = "max-content";
-    joueur_5.style.borderRadius = "25px";
-    joueur_5.style.paddingLeft = "5px";
-    joueur_5.style.paddingRight = "5px";
-    //on supprime le jeu
+    }
+
+    // Masquer le jeu
     game.classList.add("hidden");
-    //on affiche le jeu de fin (relier)
+    // Afficher le jeu de fin (relier)
     outro_relier.classList.remove("hidden");
   });
 
